@@ -13,10 +13,10 @@
 
 namespace exdir {
 
-void load_npy(std::filesystem::path fpath, char*& data_ptr,
+void load_npy(boost::filesystem::path fpath, char*& data_ptr,
               std::vector<size_t>& shape, DType& dtype, bool& c_contiguous) {
   // Open file
-  std::ifstream file(fpath);
+  std::ifstream file(fpath.string());
 
   // Read magic string
   char* magic_string = new char[6];
@@ -154,7 +154,7 @@ void load_npy(std::filesystem::path fpath, char*& data_ptr,
   file.close();
 }
 
-void write_npy(std::filesystem::path fpath, const char* data_ptr,
+void write_npy(boost::filesystem::path fpath, const char* data_ptr,
                std::vector<size_t> shape, DType dtype, bool c_contiguous) {
   // Calculate number of elements from the shape
   uint64_t n_elements = shape[0];
@@ -163,7 +163,7 @@ void write_npy(std::filesystem::path fpath, const char* data_ptr,
   }
 
   // Open file
-  std::ofstream file(fpath);
+  std::ofstream file(fpath.string());
 
   // First write magic string
   file << '\x93' << 'N' << 'U' << 'M' << 'P' << 'Y';

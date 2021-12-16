@@ -4,6 +4,10 @@ project(exdir-cpp VERSION 0.0.1 LANGUAGES CXX)
 include(CheckCXXCompilerFlag)
 include(GNUInstallDirs)
 
+set(CMAKE_CXX_STANDARD 11)
+
+find_package(Boost REQUIRED COMPONENTS filesystem)
+
 set(EXDIR_CPP_SOURCE_FILES ${EXDIR_CPP_SOURCE_FILES}
   src/object.cpp
   src/group.cpp
@@ -20,7 +24,7 @@ add_library(exdir-cpp SHARED ${EXDIR_CPP_SOURCE_FILES})
 
 # Find and link with yaml-cpp
 find_package (yaml-cpp REQUIRED)
-target_link_libraries(exdir-cpp PUBLIC ${YAML_CPP_LIBRARIES})
+target_link_libraries(exdir-cpp PUBLIC ${YAML_CPP_LIBRARIES} Boost::filesystem)
 
 target_include_directories(exdir-cpp
   PUBLIC
@@ -35,11 +39,6 @@ target_compile_options(exdir-cpp
     $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wshadow -Weffc++ -Wno-long-long>
     $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-pedantic -pedantic-errors>
     $<$<CXX_COMPILER_ID:MSVC>:/W3 /wd4127 /wd4355>
-)
-
-target_compile_features(exdir-cpp
-  PUBLIC
-    cxx_std_17  
 )
 
 set_target_properties(exdir-cpp PROPERTIES

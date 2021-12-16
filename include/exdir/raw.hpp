@@ -18,7 +18,7 @@ namespace exdir {
 
 class Raw : public Object {
  public:
-  Raw(std::filesystem::path i_path);
+  Raw(boost::filesystem::path i_path);
   ~Raw() = default;
 
   // A Raw cannot have any daughter nodes, only member files,

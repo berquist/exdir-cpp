@@ -13,7 +13,7 @@
 
 namespace exdir {
 
-File::File(std::filesystem::path i_path) : Group{i_path} {
+File::File(boost::filesystem::path i_path) : Group{i_path} {
   // Use is_file() to make sure a File object was loaded.
   if (!is_file()) {
     std::string mssg = path_.string() + " does not contain a File object.";
@@ -21,14 +21,14 @@ File::File(std::filesystem::path i_path) : Group{i_path} {
   }
 }
 
-File create_file(std::filesystem::path name) {
+File create_file(boost::filesystem::path name) {
   // Make sure directory does not yet exists
-  if (!std::filesystem::exists(name)) {
+  if (!boost::filesystem::exists(name)) {
     // Make directory
-    std::filesystem::create_directory(name);
+    boost::filesystem::create_directory(name);
 
     // Make exdir.yaml file for directory
-    std::ofstream exdir_yaml(name / "exdir.yaml");
+    std::ofstream exdir_yaml((name / "exdir.yaml").string());
     exdir_yaml << "exdir:\n";
     // TODO put version in a header eventuall
     exdir_yaml << "  version: " << 1 << "\n";

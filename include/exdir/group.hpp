@@ -20,7 +20,7 @@ namespace exdir {
 
 class Group : public Object {
  public:
-  Group(std::filesystem::path i_path);
+  Group(boost::filesystem::path i_path);
   ~Group() = default;
 
   // Create a new group within the current group called <name>
@@ -34,12 +34,12 @@ class Group : public Object {
   template <class T>
   exdir::Dataset<T> create_dataset(std::string name, const exdir::NDArray<T>& data) {
     // Make sure directory does not yet exists
-    if (!std::filesystem::exists(path_ / name)) {
+    if (!boost::filesystem::exists(path_ / name)) {
       // Make directory
-      std::filesystem::create_directory(path_ / name);
+      boost::filesystem::create_directory(path_ / name);
 
       // Make exdir.yaml file for directory
-      std::ofstream exdir_yaml(path_ / name / "exdir.yaml");
+      std::ofstream exdir_yaml((path_ / name / "exdir.yaml").string());
       exdir_yaml << "exdir:\n";
       // TODO put version in a header eventuall
       exdir_yaml << "  version: " << 1 << "\n";
@@ -50,7 +50,7 @@ class Group : public Object {
       datasets_.push_back(name);
 
       // Write data to data.npy
-      data.save(path_ / name / "data.npy");
+      data.save((path_ / name / "data.npy").string());
 
     } else {
       std::string mssg =

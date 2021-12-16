@@ -14,8 +14,7 @@
 
 #include <cstdint>
 #include <cstring>
-#include <exception>
-#include <filesystem>
+#include <boost/filesystem.hpp>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -44,11 +43,11 @@ enum class DType {
 // array of chars, which must latter be type cast be the user. The char* to
 // the data is returned as a reference, along with the number of elements,
 // continuits, and element size in bytes. Returned is a vector for the shape.
-void load_npy(std::filesystem::path fpath, char*& data_ptr,
+void load_npy(boost::filesystem::path fpath, char*& data_ptr,
               std::vector<size_t>& shape, DType& dtype, bool& c_contiguous);
 
 // Function which writes binary data to a Numpy .npy file.
-void write_npy(std::filesystem::path fpath, const char* data_ptr,
+void write_npy(boost::filesystem::path fpath, const char* data_ptr,
                std::vector<size_t> shape, DType dtype, bool c_contiguous);
 
 // Returns the proper DType for a given Numpy dtype.descr string.

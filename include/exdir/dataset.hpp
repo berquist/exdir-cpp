@@ -21,7 +21,7 @@ namespace exdir {
 template<class T>
 class Dataset : public Object {
  public:
-  Dataset(std::filesystem::path i_path);
+  Dataset(boost::filesystem::path i_path);
   ~Dataset();
 
   exdir::Raw create_raw(std::string name);

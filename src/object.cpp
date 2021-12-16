@@ -13,9 +13,9 @@
 
 namespace exdir {
 
-Object::Object(std::filesystem::path i_path) : path_{i_path} {
+Object::Object(boost::filesystem::path i_path) : path_{i_path} {
   // Check if exdir.yaml exists, if so, load into exdir_info
-  if (std::filesystem::exists(path_ / "exdir.yaml")) {
+  if (boost::filesystem::exists(path_ / "exdir.yaml")) {
     exdir_info = YAML::LoadFile((path_ / "exdir.yaml").string());
 
     // Set data type from exdir.yaml
@@ -39,7 +39,7 @@ Object::Object(std::filesystem::path i_path) : path_{i_path} {
   }
 
   // Check if attributes.yaml exists. If so, load into attributes
-  if (std::filesystem::exists(path_ / "attributes.yaml")) {
+  if (boost::filesystem::exists(path_ / "attributes.yaml")) {
     attrs = YAML::LoadFile((path_ / "attributes.yaml").string());
   }
 }
@@ -81,7 +81,7 @@ bool Object::has_attributes() const {
 
 std::string Object::name() const { return path_.filename().string(); }
 
-std::filesystem::path Object::path() const { return path_; }
+boost::filesystem::path Object::path() const { return path_; }
 
 bool Object::operator==(const Object& obj) const {
   return (path_.relative_path() == obj.path().relative_path());
@@ -90,7 +90,7 @@ bool Object::operator==(const Object& obj) const {
 void Object::write() {
   // Write attributes to file
   if (!attrs.IsNull()) {
-    std::ofstream attributes_yaml(path_ / "attributes.yaml");
+    std::ofstream attributes_yaml((path_ / "attributes.yaml").string());
     attributes_yaml << attrs;
     attributes_yaml.close();
   }

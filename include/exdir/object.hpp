@@ -15,7 +15,7 @@
 #include <yaml-cpp/yaml.h>
 
 #include <exception>
-#include <filesystem>
+#include <boost/filesystem.hpp>
 #include <fstream>
 #include <string>
 
@@ -45,8 +45,8 @@ class Object {
   // Returns the name of the object as a string.
   std::string name() const;
 
-  // Returns the std::filesystem::path to the object from the root.
-  std::filesystem::path path() const;
+  // Returns the boost::filesystem::path to the object from the root.
+  boost::filesystem::path path() const;
 
   // Returns true if the two objects have the same path.
   bool operator==(const Object& obj) const;
@@ -60,9 +60,9 @@ class Object {
   YAML::Node attrs;
 
  protected:
-  Object(std::filesystem::path i_path);
+  Object(boost::filesystem::path i_path);
   Type type_;
-  std::filesystem::path path_;
+  boost::filesystem::path path_;
   // Exidr info stored in a yaml node
   YAML::Node exdir_info;
 

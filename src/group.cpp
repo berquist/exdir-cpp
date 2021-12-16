@@ -13,7 +13,7 @@
 
 namespace exdir {
 
-Group::Group(std::filesystem::path i_path) : Object{i_path} {
+Group::Group(boost::filesystem::path i_path) : Object{i_path} {
   // use is_group() and is_file() to make sure group object was loaded.
   if (!is_group()) {
     std::string mssg = path_.string() + " does not contain a Group object.";
@@ -21,10 +21,10 @@ Group::Group(std::filesystem::path i_path) : Object{i_path} {
   }
 
   // Look at all members in file, check if folder
-  for (auto& f : std::filesystem::directory_iterator(path_)) {
-    if (std::filesystem::is_directory(f.status())) {
+  for (auto& f : boost::filesystem::directory_iterator(path_)) {
+    if (boost::filesystem::is_directory(f.status())) {
       // Is a directory, check if exdir.yaml exists
-      if (std::filesystem::exists(f.path() / "exdir.yaml")) {
+      if (boost::filesystem::exists(f.path() / "exdir.yaml")) {
         YAML::Node daughter_node =
             YAML::LoadFile((f.path() / "exdir.yaml").string());
 
@@ -61,14 +61,14 @@ Group::Group(std::filesystem::path i_path) : Object{i_path} {
 
 Group Group::create_group(std::string name) {
   // Make sure directory does not yet exists
-  if (!std::filesystem::exists(path_ / name)) {
+  if (!boost::filesystem::exists(path_ / name)) {
     // Make directory
-    std::filesystem::create_directory(path_ / name);
+    boost::filesystem::create_directory(path_ / name);
 
     // Make exdir.yaml file for directory
-    std::ofstream exdir_yaml(path_ / name / "exdir.yaml");
+    std::ofstream exdir_yaml((path_ / name / "exdir.yaml").string());
     exdir_yaml << "exdir:\n";
-    // TODO put version in a header eventuall
+    // TODO put version in a header eventually
     exdir_yaml << "  version: " << 1 << "\n";
     exdir_yaml << "  type: \"group\"";
     exdir_yaml.close();
@@ -87,12 +87,12 @@ Group Group::create_group(std::string name) {
 
 Raw Group::create_raw(std::string name) {
   // Make sure directory does not yet exists
-  if (!std::filesystem::exists(path_ / name)) {
+  if (!boost::filesystem::exists(path_ / name)) {
     // Make directory
-    std::filesystem::create_directory(path_ / name);
+    boost::filesystem::create_directory(path_ / name);
 
     // Make exdir.yaml file for directory
-    std::ofstream exdir_yaml(path_ / name / "exdir.yaml");
+    std::ofstream exdir_yaml((path_ / name / "exdir.yaml").string());
     exdir_yaml << "exdir:\n";
     // TODO put version in a header eventuall
     exdir_yaml << "  version: " << 1 << "\n";

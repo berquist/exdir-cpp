@@ -14,25 +14,25 @@
 namespace exdir {
 
 template<class T>
-Dataset<T>::Dataset(std::filesystem::path i_path) : Object{i_path} {
+Dataset<T>::Dataset(boost::filesystem::path i_path) : Object{i_path} {
   if (!is_dataset()) {
     std::string mssg = path_.string() + " does not contain a Dataset object.";
     throw std::runtime_error(mssg);
   }
 
   // Make sure data.npy is present
-  if (!std::filesystem::exists(path_ / "data.npy")) {
+  if (!boost::filesystem::exists(path_ / "data.npy")) {
     std::string mssg = (path_ / "data.npy").string() + " does not exists.";
     throw std::runtime_error(mssg);
   }
 
   // Load data
-  data = NDArray<T>::load(path_/"data.npy");
+  data = NDArray<T>::load((path_ / "data.npy").string());
 
   // Get any raw folders in directory
   // Look at all members in file, check if folder
-  for (auto& f : std::filesystem::directory_iterator(path_)) {
-    if (std::filesystem::is_directory(f.status())) {
+  for (auto& f : boost::filesystem::directory_iterator(path_)) {
+    if (boost::filesystem::is_directory(f.status())) {
       // Is a directory, must be raw if in dataset
       raws_.push_back(f.path().filename().string());
     }
@@ -47,12 +47,12 @@ Dataset<T>::~Dataset() {
 template<class T>
 Raw Dataset<T>::create_raw(std::string name) {
   // Make sure directory does not yet exists
-  if (!std::filesystem::exists(path_ / name)) {
+  if (!boost::filesystem::exists(path_ / name)) {
     // Make directory
-    std::filesystem::create_directory(path_ / name);
+    boost::filesystem::create_directory(path_ / name);
 
     // Make exdir.yaml file for directory
-    std::ofstream exdir_yaml(path_ / name / "exdir.yaml");
+    std::ofstream exdir_yaml((path_ / name / "exdir.yaml").string());
     exdir_yaml << "exdir:";
     // TODO put version in a header eventuall
     exdir_yaml << "  version: " << 1 << "\n";
@@ -74,11 +74,11 @@ Raw Dataset<T>::create_raw(std::string name) {
 template <class T>
 void Dataset<T>::write() {
   // Write data to npy file
-  data.save(path_/"data.npy"); 
+  data.save((path_ / "data.npy").string()); 
 
   // Write attributes as well
   if (!attrs.IsNull()) {
-    std::ofstream attributes_yaml(path_ / "attributes.yaml");
+    std::ofstream attributes_yaml((path_ / "attributes.yaml").string());
     attributes_yaml << attrs;
     attributes_yaml.close();
   }
