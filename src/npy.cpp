@@ -431,4 +431,4 @@ void swap_sixteen_bytes(char* bytes) {
   bytes[15] = temp[0];
 }
 
-};  // namespace exdir
+} // namespace exdir

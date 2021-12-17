@@ -79,5 +79,5 @@ void swap_eight_bytes(char* bytes);
 // Swaps the first sixteen bytes pointed to by char* bytes.
 void swap_sixteen_bytes(char* bytes);
 
-};      // namespace exdir
+} // namespace exdir
 #endif  // EXDIR_NPY_H

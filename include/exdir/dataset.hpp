@@ -39,5 +39,5 @@ class Dataset : public Object {
 
 };  // Dataset
 
-};      // namespace exdir
+} // namespace exdir
 #endif  // EXDIR_DATASET_H

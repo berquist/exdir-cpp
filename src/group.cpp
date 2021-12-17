@@ -143,4 +143,4 @@ std::vector<std::string> Group::member_datasets() const { return datasets_; }
 
 std::vector<std::string> Group::member_raws() const { return raws_; }
 
-};  // namespace exdir
+} // namespace exdir

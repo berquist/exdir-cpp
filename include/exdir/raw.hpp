@@ -28,5 +28,5 @@ class Raw : public Object {
 
 };  // Raw
 
-};      // namespace exdir
+} // namespace exdir
 #endif  // EXDIR_RAW_H

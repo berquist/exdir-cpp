@@ -98,5 +98,5 @@ class Group : public Object {
 
 };  // Group
 
-};      // namespace exdir
+} // namespace exdir
 #endif  // EXDIR_GROUP_H

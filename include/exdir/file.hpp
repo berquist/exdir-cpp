@@ -28,5 +28,5 @@ class File : public Group {
 // Non Member function to create a new Exdir file
 File create_file(boost::filesystem::path name);
 
-};      // namespace exdir
+} // namespace exdir
 #endif  // EXDIR_FILE_H

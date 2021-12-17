@@ -29,4 +29,4 @@ std::vector<std::string> Raw::member_files() const {
   }
   return files;
 }
-};  // namespace exdir
+} // namespace exdir

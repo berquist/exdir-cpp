@@ -44,4 +44,4 @@ File create_file(boost::filesystem::path name) {
   }
 }
 
-};  // namespace exdir
+} // namespace exdir

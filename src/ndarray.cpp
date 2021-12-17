@@ -240,7 +240,7 @@ void NDArray<T>::reallocate(std::vector<size_t> new_shape) {
   }
 }
 
-}; // namespace exdir
+} // namespace exdir
 
 // Explicit Instantiation
 template class exdir::NDArray<char>;

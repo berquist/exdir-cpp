@@ -101,7 +101,7 @@ Raw Dataset<T>::get_raw(std::string name) const {
 template<class T>
 std::vector<std::string> Dataset<T>::member_raws() const { return raws_; }
 
-};  // namespace exdir
+} // namespace exdir
 
 // Explicit Instantiation
 template class exdir::Dataset<char>;

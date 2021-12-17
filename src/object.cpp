@@ -95,4 +95,4 @@ void Object::write() {
     attributes_yaml.close();
   }
 }
-};  // namespace exdir
+} // namespace exdir

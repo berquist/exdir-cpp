@@ -67,6 +67,6 @@ class Object {
   YAML::Node exdir_info;
 
 };  // object
-};  // namespace exdir
+}  // namespace exdir
 
 #endif  // EXDIR_OBJECT_H

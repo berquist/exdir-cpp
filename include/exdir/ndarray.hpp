@@ -542,5 +542,5 @@ NDArray<T>::operator NDArray<C>() const {
   return new_array;
 }
 
-}; // namespace exdir
+} // namespace exdir
 #endif  // EXDIR_NDARRAY_H
