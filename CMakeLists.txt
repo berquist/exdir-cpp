@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.12)
-project(exdir-cpp VERSION 0.0.1 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.10)
+project(exdir-cpp VERSION 0.0.2 LANGUAGES CXX)
 
 include(CheckCXXCompilerFlag)
 include(GNUInstallDirs)
@@ -24,14 +24,12 @@ add_library(exdir-cpp SHARED ${EXDIR_CPP_SOURCE_FILES})
 
 # Find and link with yaml-cpp
 find_package (yaml-cpp REQUIRED)
-target_link_libraries(exdir-cpp PUBLIC ${YAML_CPP_LIBRARIES} Boost::filesystem)
+target_link_libraries(exdir-cpp PUBLIC yaml-cpp Boost::filesystem)
 
 target_include_directories(exdir-cpp
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<BUILD_INTERFACE:${YAML_CPP_INCLUDE_DIR}>
     $<INSTALL_INTERFACE:include>  
-    $<INSTALL_INTERFACE:${YAML_CPP_INCLUDE_DIR}>
 )
 
 target_compile_options(exdir-cpp
