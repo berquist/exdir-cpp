@@ -20,7 +20,7 @@ set(EXDIR_CPP_SOURCE_FILES ${EXDIR_CPP_SOURCE_FILES}
 
 # Add shared library target. Must be shared due to dependence on yaml-cpp.
 # I am not completely sure why though.
-add_library(exdir-cpp SHARED ${EXDIR_CPP_SOURCE_FILES})
+add_library(exdir-cpp ${EXDIR_CPP_SOURCE_FILES})
 
 # Find and link with yaml-cpp
 find_package (yaml-cpp REQUIRED)
