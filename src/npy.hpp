@@ -39,6 +39,16 @@ enum class DType {
   COMPLEX128
 };
 
+// The path is only given for diagnostic purposes: only the file handle is
+// used and it is expected to be open before the function call.
+size_t read_npy_header(
+  boost::filesystem::path fpath,
+  std::ifstream &file,
+  std::vector<size_t> &shape,
+  DType &dtype,
+  bool &c_contiguous,
+  bool &data_is_little_endian);
+
 // Function which opens file fname, and loads in the binary data into 1D
 // array of chars, which must latter be type cast be the user. The char* to
 // the data is returned as a reference, along with the number of elements,

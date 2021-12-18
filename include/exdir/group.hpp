@@ -81,6 +81,7 @@ class Group : public Object {
     throw std::runtime_error(mssg);
   }
 
+  std::vector<size_t> shape(const std::string &name) const;
 
   // Get vector of keys for member groups
   std::vector<std::string> member_groups() const;

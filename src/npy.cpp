@@ -13,10 +13,18 @@
 
 namespace exdir {
 
-void load_npy(boost::filesystem::path fpath, char*& data_ptr,
-              std::vector<size_t>& shape, DType& dtype, bool& c_contiguous) {
-  // Open file
-  std::ifstream file(fpath.string());
+size_t read_npy_header(
+  boost::filesystem::path fpath,
+  std::ifstream &file,
+  std::vector<size_t> &shape,
+  DType &dtype,
+  bool &c_contiguous,
+  bool &data_is_little_endian) {
+
+  if (!file.is_open()) {
+    const std::string mssg = fpath.string() + " is not open.";
+    throw std::runtime_error(mssg);
+  }
 
   // Read magic string
   char* magic_string = new char[6];
@@ -89,7 +97,6 @@ void load_npy(boost::filesystem::path fpath, char*& data_ptr,
   loc1 = header.find("'descr': ");
   loc1 += 9;
   std::string descr_string = "";
-  bool data_is_little_endian = false;
   if (header[loc1 + 1] == '>')
     data_is_little_endian = false;
   else
@@ -104,8 +111,6 @@ void load_npy(boost::filesystem::path fpath, char*& data_ptr,
     }
     i++;
   }
-  dtype = descr_to_DType(descr_string);
-  size_t element_size = size_of_DType(dtype);
 
   // Parse header to get shape
   loc1 = header.find('(');
@@ -133,6 +138,22 @@ void load_npy(boost::filesystem::path fpath, char*& data_ptr,
     }
   }
 
+  // Clean up
+  delete[] magic_string;
+  delete[] header_char;
+
+  dtype = descr_to_DType(descr_string);
+  return size_of_DType(dtype);
+}
+
+void load_npy(boost::filesystem::path fpath, char*& data_ptr,
+              std::vector<size_t>& shape, DType& dtype, bool& c_contiguous) {
+  // Open file
+  std::ifstream file(fpath.string());
+
+  bool data_is_little_endian;
+  const size_t element_size = read_npy_header(fpath, file, shape, dtype, c_contiguous, data_is_little_endian);
+
   // Get number of bytes to be read into system
   uint64_t n_elements = shape[0];
   for (size_t j = 1; j < shape.size(); j++) n_elements *= shape[j];
@@ -148,9 +169,7 @@ void load_npy(boost::filesystem::path fpath, char*& data_ptr,
   // Set pointer reference
   data_ptr = data;
 
-  // Clear Memory
-  delete[] magic_string;
-  delete[] header_char;
+  // Clean up
   file.close();
 }
 

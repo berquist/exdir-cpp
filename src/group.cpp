@@ -10,6 +10,7 @@
  *
  * */
 #include <exdir/group.hpp>
+#include "npy.hpp"
 
 namespace exdir {
 
@@ -135,6 +136,19 @@ Raw Group::get_raw(std::string name) const {
   std::string mssg =
       "The raw " + name + " is not a member of " + this->name() + ".";
   throw std::runtime_error(mssg);
+}
+
+std::vector<size_t> Group::shape(const std::string &name) const {
+  const boost::filesystem::path data_path = path() / name / "data.npy";
+  std::ifstream data_file(data_path.string());
+  std::vector<size_t> shape;
+  DType dtype;
+  bool c_contiguous;
+  bool data_is_little_endian;
+  const size_t element_size = read_npy_header(
+    data_path, data_file, shape, dtype,
+    c_contiguous, data_is_little_endian);
+  return shape;
 }
 
 std::vector<std::string> Group::member_groups() const { return groups_; }
