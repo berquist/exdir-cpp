@@ -24,9 +24,9 @@ class Dataset : public Object {
   Dataset(boost::filesystem::path i_path);
   ~Dataset();
 
-  exdir::Raw create_raw(std::string name);
+  exdir::Raw create_raw(const std::string &name);
 
-  exdir::Raw get_raw(std::string) const;
+  exdir::Raw get_raw(const std::string &name) const;
   std::vector<std::string> member_raws() const;
 
   void write() final;

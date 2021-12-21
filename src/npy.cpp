@@ -34,7 +34,7 @@ size_t read_npy_header(
   if (magic_string[0] != '\x93' || magic_string[1] != 'N' ||
       magic_string[2] != 'U' || magic_string[3] != 'M' ||
       magic_string[4] != 'P' || magic_string[5] != 'Y') {
-    std::string mssg = fpath.string() + " is an invalid .npy file.";
+    const std::string mssg = fpath.string() + " is an invalid .npy file.";
     throw std::runtime_error(mssg);
   }
 
@@ -72,7 +72,7 @@ size_t read_npy_header(
   // Array for header, and read in
   char* header_char = new char[length_of_header];
   file.read(header_char, length_of_header);
-  std::string header(header_char);
+  const std::string header(header_char);
 
   // Parse header to get continuity
   size_t loc1 = header.find("'fortran_order': ");
@@ -247,14 +247,14 @@ void write_npy(boost::filesystem::path fpath, const char* data_ptr,
   file << header.c_str();
 
   // Write all data to file
-  uint64_t n_bytes = n_elements * size_of_DType(dtype);
+  const uint64_t n_bytes = n_elements * size_of_DType(dtype);
   for (uint64_t i = 0; i < n_bytes; i++) file << data_ptr[i];
 
   // Close file
   file.close();
 }
 
-DType descr_to_DType(std::string dtype) {
+DType descr_to_DType(const std::string &dtype) {
   if (dtype == "b1")
     return DType::CHAR;
   else if (dtype == "B1")
@@ -280,7 +280,7 @@ DType descr_to_DType(std::string dtype) {
   else if (dtype == "c16")
     return DType::COMPLEX128;
   else {
-    std::string mssg = "Data type " + dtype + " is unknown.";
+    const std::string mssg = "Data type " + dtype + " is unknown.";
     throw std::runtime_error(mssg);
   }
 }
@@ -311,7 +311,7 @@ std::string DType_to_descr(DType dtype) {
   else if (dtype == DType::COMPLEX128)
     return "c16";
   else {
-    std::string mssg = "Unknown DType identifier.";
+    const std::string mssg = "Unknown DType identifier.";
     throw std::runtime_error(mssg);
   }
 }
@@ -342,7 +342,7 @@ size_t size_of_DType(DType dtype) {
   else if (dtype == DType::COMPLEX128)
     return 16;
   else {
-    std::string mssg = "Unknown DType identifier.";
+    const std::string mssg = "Unknown DType identifier.";
     throw std::runtime_error(mssg);
   }
 }
@@ -358,7 +358,7 @@ bool system_is_little_endian() {
 
 void swap_bytes(char* data, uint64_t n_elements, size_t element_size) {
   // Calculate number of total bytes
-  uint64_t number_of_bytes = n_elements * element_size;
+  const uint64_t number_of_bytes = n_elements * element_size;
 
   // Iterate through all elements, and swap their bytes
   for (uint64_t i = 0; i < number_of_bytes; i += element_size) {
@@ -373,8 +373,8 @@ void swap_bytes(char* data, uint64_t n_elements, size_t element_size) {
     } else if(element_size == 16) {
       swap_sixteen_bytes(data+i);
     } else {
-      std::string mssg = "Cannot swap bytes for data types of size " +
-                         std::to_string(element_size);
+      const std::string mssg = "Cannot swap bytes for data types of size " +
+        std::to_string(element_size);
       throw std::runtime_error(mssg);
     }
   }

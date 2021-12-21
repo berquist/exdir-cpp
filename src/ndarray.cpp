@@ -34,7 +34,7 @@ NDArray<T>::NDArray(std::vector<size_t> init_shape, bool c_continuous) {
     c_continuous_ = c_continuous;
 
   } else {
-    std::string mssg = "NDArray shape vector must have at least one element.";
+    const std::string mssg = "NDArray shape vector must have at least one element.";
     throw std::runtime_error(mssg);
   }
 }
@@ -52,7 +52,7 @@ NDArray<T>::NDArray(std::vector<T> data, std::vector<size_t> init_shape,
     }
 
     if (ne != data.size()) {
-      std::string mssg =
+      const std::string mssg =
           "Shape is incompatible with number of elements provided for NDArray.";
       throw std::runtime_error(mssg);
     }
@@ -62,14 +62,14 @@ NDArray<T>::NDArray(std::vector<T> data, std::vector<size_t> init_shape,
     c_continuous_ = c_continuous;
 
   } else {
-    std::string mssg =
+    const std::string mssg =
         "Shape vector must have at least one element for NDArray.";
     throw std::runtime_error(mssg);
   }
 }
 
 template <class T>
-NDArray<T> NDArray<T>::load(std::string fname) {
+NDArray<T> NDArray<T>::load(const std::string &fname) {
   // Get expected DType according to T
   DType expected_dtype;
   const char* T_type_name = typeid(T).name();
@@ -99,7 +99,7 @@ NDArray<T> NDArray<T>::load(std::string fname) {
   else if (T_type_name == typeid(std::complex<double>).name())
     expected_dtype = DType::COMPLEX128;
   else {
-    std::string mssg = "The datatype is not supported for NDArray.";
+    const std::string mssg = "The datatype is not supported for NDArray.";
     throw std::runtime_error(mssg);
   }
 
@@ -115,14 +115,14 @@ NDArray<T> NDArray<T>::load(std::string fname) {
 
   // Ensuire DType variables match
   if (expected_dtype != data_dtype) {
-    std::string mssg =
+    const std::string mssg =
         "NDArray template datatype does not match specified datatype in npy "
         "file.";
     throw std::runtime_error(mssg);
   }
 
   if (data_shape.size() < 1) {
-    std::string mssg =
+    const std::string mssg =
         "Shape vector must have at least one element for NDArray.";
     throw std::runtime_error(mssg);
   }
@@ -148,7 +148,7 @@ NDArray<T> NDArray<T>::load(std::string fname) {
 }
 
 template <class T>
-void NDArray<T>::save(std::string fname) const {
+void NDArray<T>::save(const std::string &fname) const {
   // Get expected DType according to T
   DType dtype;
   const char* T_type_name = typeid(T).name();
@@ -178,7 +178,7 @@ void NDArray<T>::save(std::string fname) const {
   else if (T_type_name == typeid(std::complex<double>).name())
     dtype = DType::COMPLEX128;
   else {
-    std::string mssg = "The datatype is not supported for NDArray.";
+    const std::string mssg = "The datatype is not supported for NDArray.";
     throw std::runtime_error(mssg);
   }
 
@@ -196,7 +196,7 @@ template <class T>
 void NDArray<T>::reshape(std::vector<size_t> new_shape) {
   // Ensure new shape has proper dimensions
   if (new_shape.size() < 1) {
-    std::string mssg =
+    const std::string mssg =
         "Shape vector must have at least one element to"
         " reshpae NDArray.";
     throw std::runtime_error(mssg);
@@ -211,7 +211,7 @@ void NDArray<T>::reshape(std::vector<size_t> new_shape) {
       shape_ = new_shape;
       dimensions_ = shape_.size();
     } else {
-      std::string mssg =
+      const std::string mssg =
           "Shape is incompatible with number of elements in"
           " NDArray.";
       throw std::runtime_error(mssg);
@@ -223,7 +223,7 @@ template <class T>
 void NDArray<T>::reallocate(std::vector<size_t> new_shape) {
   // Ensure new shape has proper dimensions
   if (new_shape.size() < 1) {
-    std::string mssg =
+    const std::string mssg =
         "Shape vector must have at least one element to"
         " reallocate NDArray.";
     throw std::runtime_error(mssg);

@@ -61,7 +61,7 @@ void write_npy(boost::filesystem::path fpath, const char* data_ptr,
                std::vector<size_t> shape, DType dtype, bool c_contiguous);
 
 // Returns the proper DType for a given Numpy dtype.descr string.
-DType descr_to_DType(std::string dtype);
+DType descr_to_DType(const std::string &dtype);
 
 // Returns Numpy descr string for given DType
 std::string DType_to_descr(DType dtype);

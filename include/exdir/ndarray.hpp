@@ -48,7 +48,7 @@ class NDArray {
   ~NDArray() = default;
 
   // Static load function
-  static NDArray load(std::string fname);
+  static NDArray load(const std::string &fname);
 
   //==========================================================================
   // Indexing
@@ -87,7 +87,7 @@ class NDArray {
   bool c_continuous() const;
 
   // Save array to the file fname.npy
-  void save(std::string fname) const;
+  void save(const std::string &fname) const;
 
   //==========================================================================
   // Non-Constant Methods

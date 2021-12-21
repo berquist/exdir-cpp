@@ -45,7 +45,7 @@ Dataset<T>::~Dataset() {
 }
 
 template<class T>
-Raw Dataset<T>::create_raw(std::string name) {
+Raw Dataset<T>::create_raw(const std::string &name) {
   // Make sure directory does not yet exists
   if (!boost::filesystem::exists(path_ / name)) {
     // Make directory
@@ -85,7 +85,7 @@ void Dataset<T>::write() {
 }
 
 template<class T>
-Raw Dataset<T>::get_raw(std::string name) const {
+Raw Dataset<T>::get_raw(const std::string &name) const {
   // Make sure in raws_
   for (const auto& raw : raws_) {
     if (name == raw) {
