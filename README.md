@@ -21,7 +21,7 @@ the reference implentation (written for Python) can be found
 ## Usage
 Here is a brief example of exdir-cpp in action
 ```cpp
-#include<exdir/exdir.hpp>
+#include <exdir/exdir.hpp>
 
 int main() {
 

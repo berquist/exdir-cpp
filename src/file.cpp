@@ -30,7 +30,7 @@ File create_file(boost::filesystem::path name) {
     // Make exdir.yaml file for directory
     std::ofstream exdir_yaml((name / "exdir.yaml").string());
     exdir_yaml << "exdir:\n";
-    // TODO put version in a header eventuall
+    // TODO put version in a header eventually
     exdir_yaml << "  version: " << 1 << "\n";
     exdir_yaml << "  type: \"file\"";
     exdir_yaml.close();

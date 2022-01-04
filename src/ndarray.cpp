@@ -9,9 +9,9 @@
  * https://github.com/HunterBelanger/exdir-cpp
  *
  * */
-#include<exdir/ndarray.hpp>
+#include <exdir/ndarray.hpp>
 
-#include"npy.hpp"
+#include "npy.hpp"
 
 namespace exdir {
 
