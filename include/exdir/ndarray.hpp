@@ -18,6 +18,7 @@
 #include <cstdint>
 #include <cstring>
 #include <fstream>
+#include <iterator>
 #include <stdexcept>
 #include <string>
 #include <typeinfo>
@@ -61,7 +62,7 @@ public:
   ~NDArray() = default;
 
   // Static load function
-  static NDArray load(const std::string &fname);
+  static NDArray<T> load(const std::string &fname);
 
   //==========================================================================
   // Indexing
@@ -139,7 +140,56 @@ public:
   template <class C>
   operator NDArray<C>() const;
 
- private:
+  //==========================================================================
+  // STL Iterators
+  // TODO iterate in both C and Fortran order
+  struct Iterator {
+    using iterator_category = std::forward_iterator_tag;
+    using difference_type = std::ptrdiff_t;
+    using value_type = T;
+    using pointer = T*;
+    using reference = T&;
+
+    Iterator(pointer ptr) : m_ptr(ptr) { }
+
+    reference operator*() const { return *m_ptr; }
+    pointer operator->() { return m_ptr; }
+
+    // Prefix increment
+    Iterator& operator++() { m_ptr++; return *this; }
+
+    // Postfix increment
+    Iterator& operator++(int) { Iterator tmp = *this; ++(*this); return tmp; }
+
+    friend bool operator== (const Iterator& a, const Iterator& b) { return a.m_ptr == b.m_ptr; };
+    friend bool operator!= (const Iterator& a, const Iterator& b) { return a.m_ptr != b.m_ptr; };
+
+  private:
+    pointer m_ptr;
+  };
+
+  Iterator begin() {
+    if (!c_continuous_)
+      throw std::runtime_error("can't iterate in column-major order yet");
+    return Iterator(&(*data_.begin()));
+  }
+  Iterator end() {
+    if (!c_continuous_)
+      throw std::runtime_error("can't iterate in column-major order yet");
+    return Iterator(&(*data_.end()));
+  }
+  const Iterator cbegin() const {
+    if (!c_continuous_)
+      throw std::runtime_error("can't iterate in column-major order yet");
+    return Iterator(const_cast<T*>(&(*data_.begin())));
+  }
+  const Iterator cend() const {
+    if (!c_continuous_)
+      throw std::runtime_error("can't iterate in column-major order yet");
+    return Iterator(const_cast<T*>(&(*data_.end())));
+  }
+
+private:
   std::vector<T> data_;
   bool c_continuous_;
   size_t dimensions_;
