@@ -34,11 +34,24 @@
 #endif
 
 namespace exdir {
+
+class NDArrayBase {
+public:
+  //==========================================================================
+  // Constant Methods
+
+  // Return vector describing shape of array
+  const std::vector<size_t> &shape() const;
+
+protected:
+  std::vector<size_t> shape_;
+};
+
 //==============================================================================
 // Template Class NDArray
 template <class T>
-class NDArray {
- public:
+class NDArray : public NDArrayBase {
+public:
   //==========================================================================
   // Constructors and Destructors
   NDArray();
@@ -70,9 +83,6 @@ class NDArray {
 
   //==========================================================================
   // Constant Methods
-
-  // Return vector describing shape of array
-  std::vector<size_t> shape() const;
 
   // Return number of elements in array
   size_t size() const;
@@ -131,7 +141,6 @@ class NDArray {
 
  private:
   std::vector<T> data_;
-  std::vector<size_t> shape_;
   bool c_continuous_;
   size_t dimensions_;
 
@@ -221,8 +230,7 @@ NDARRAY_INLINE const T& NDArray<T>::operator[](size_t i) const {
   return data_[i];
 }
 
-template <class T>
-NDARRAY_INLINE std::vector<size_t> NDArray<T>::shape() const {
+NDARRAY_INLINE const std::vector<size_t> &NDArrayBase::shape() const {
   return shape_;
 }
 
