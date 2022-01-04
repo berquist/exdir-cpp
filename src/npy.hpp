@@ -61,7 +61,7 @@ void write_npy(boost::filesystem::path fpath, const char* data_ptr,
                std::vector<size_t> shape, DType dtype, bool c_contiguous);
 
 // Returns the proper DType for a given Numpy dtype.descr string.
-DType descr_to_DType(std::string dtype);
+DType descr_to_DType(const std::string &dtype);
 
 // Returns Numpy descr string for given DType
 std::string DType_to_descr(DType dtype);
@@ -69,10 +69,10 @@ std::string DType_to_descr(DType dtype);
 // Returns the number of bytes used to represent the provided DType.
 size_t size_of_DType(DType dtype);
 
-// Function to check wether or not host system is little-endian or not
+// Function to check whether or not host system is little-endian
 bool system_is_little_endian();
 
-// Function to switch bye order of data for an array which contains
+// Function to switch byte order of data for an array which contains
 // n_elements, each with element_size bytes. The size of data should
 // therefore be n_elements*element_size; if not, this is undefined behavior.
 void swap_bytes(char* data, uint64_t n_elements, size_t element_size);

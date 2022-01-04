@@ -30,7 +30,7 @@ Object::Object(boost::filesystem::path i_path) : path_{i_path} {
         type_ = Type::Raw;
     } else {
       // throw error, bad exdir.yaml
-      std::string mssg = path_.string() + " exdir.yaml is invalid.";
+      const std::string mssg = path_.string() + " exdir.yaml is invalid.";
       throw std::runtime_error(mssg);
     }
   } else {

@@ -17,7 +17,7 @@ namespace exdir {
 Group::Group(boost::filesystem::path i_path) : Object{i_path} {
   // use is_group() and is_file() to make sure group object was loaded.
   if (!is_group()) {
-    std::string mssg = path_.string() + " does not contain a Group object.";
+    const std::string mssg = path_.string() + " does not contain a Group object.";
     throw std::runtime_error(mssg);
   }
 
@@ -32,7 +32,7 @@ Group::Group(boost::filesystem::path i_path) : Object{i_path} {
         if (daughter_node["exdir"] && daughter_node["exdir"]["type"]) {
           // f.path() yields /dir/to/parent/current_node/daughter_node
           // Using f.path().filename() yields daughter_node as path
-          std::string node_name = f.path().filename().string();
+          const std::string node_name = f.path().filename().string();
 
           if (daughter_node["exdir"]["type"].as<std::string>() == "group")
             groups_.push_back(node_name);
@@ -43,13 +43,13 @@ Group::Group(boost::filesystem::path i_path) : Object{i_path} {
             raws_.push_back(node_name);
           else {
             // throw error, unknown type
-            std::string mssg = f.path().string() + " has an undefined type.";
+            const std::string mssg = f.path().string() + " has an undefined type.";
             throw std::runtime_error(mssg);
           }
 
         } else {
           // throw error, bad exdir.yaml
-          std::string mssg = f.path().string() + " exdir.yaml file is invalid.";
+          const std::string mssg = f.path().string() + " exdir.yaml file is invalid.";
           throw std::runtime_error(mssg);
         }
       } else {
@@ -60,7 +60,7 @@ Group::Group(boost::filesystem::path i_path) : Object{i_path} {
   }
 }
 
-Group Group::create_group(std::string name) {
+Group Group::create_group(const std::string &name) {
   // Make sure directory does not yet exists
   if (!boost::filesystem::exists(path_ / name)) {
     // Make directory
@@ -78,7 +78,7 @@ Group Group::create_group(std::string name) {
     groups_.push_back(name);
 
   } else {
-    std::string mssg =
+    const std::string mssg =
         "The directory " + name + " already exists in " + path_.string();
     throw std::runtime_error(mssg);
   }
@@ -86,7 +86,7 @@ Group Group::create_group(std::string name) {
   return get_group(name);
 }
 
-Raw Group::create_raw(std::string name) {
+Raw Group::create_raw(const std::string &name) {
   // Make sure directory does not yet exists
   if (!boost::filesystem::exists(path_ / name)) {
     // Make directory
@@ -104,7 +104,7 @@ Raw Group::create_raw(std::string name) {
     raws_.push_back(name);
 
   } else {
-    std::string mssg =
+    const std::string mssg =
         "The directory " + name + " already exists in " + path_.string();
     throw std::runtime_error(mssg);
   }
@@ -112,7 +112,7 @@ Raw Group::create_raw(std::string name) {
   return get_raw(name);
 }
 
-Group Group::get_group(std::string name) const {
+Group Group::get_group(const std::string &name) const {
   // Make sure in groups_
   for (const auto& group : groups_) {
     if (name == group) {
@@ -120,12 +120,12 @@ Group Group::get_group(std::string name) const {
     }
   }
   // throw error, wasn't a valid group
-  std::string mssg =
+  const std::string mssg =
       "The group " + name + " is not a member of " + this->name() + ".";
   throw std::runtime_error(mssg);
 }
 
-Raw Group::get_raw(std::string name) const {
+Raw Group::get_raw(const std::string &name) const {
   // Make sure in raws_
   for (const auto& raw : raws_) {
     if (name == raw) {
@@ -133,7 +133,7 @@ Raw Group::get_raw(std::string name) const {
     }
   }
   // throw error, wasn't valid Raw
-  std::string mssg =
+  const std::string mssg =
       "The raw " + name + " is not a member of " + this->name() + ".";
   throw std::runtime_error(mssg);
 }

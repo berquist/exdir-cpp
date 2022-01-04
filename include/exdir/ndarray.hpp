@@ -24,7 +24,7 @@
 #include <vector>
 
 // Macro to force function to be inlined. This is done for speed and to try and
-// force the compiler to vectorize operatrions.
+// force the compiler to vectorize operations.
 #if defined(_MSC_VER)
 #define NDARRAY_INLINE inline __forceinline
 #elif defined(__GNUC__) || defined(__clang__)
@@ -48,7 +48,7 @@ class NDArray {
   ~NDArray() = default;
 
   // Static load function
-  static NDArray load(std::string fname);
+  static NDArray load(const std::string &fname);
 
   //==========================================================================
   // Indexing
@@ -87,7 +87,7 @@ class NDArray {
   bool c_continuous() const;
 
   // Save array to the file fname.npy
-  void save(std::string fname) const;
+  void save(const std::string &fname) const;
 
   //==========================================================================
   // Non-Constant Methods
@@ -267,13 +267,13 @@ NDARRAY_INLINE size_t
 NDArray<T>::c_continuous_index(const std::vector<size_t>& indices) const {
   // Make sure proper number of indices
   if (indices.size() != dimensions_) {
-    std::string mssg = "Improper number of indicies provided to NDArray.";
+    const std::string mssg = "Improper number of indices provided to NDArray.";
     throw std::runtime_error(mssg);
   }
 
   size_t indx = indices[dimensions_ - 1];
   if (indx >= shape_[dimensions_ - 1]) {
-    std::string mssg = "Index provided to NDArray out of range.";
+    const std::string mssg = "Index provided to NDArray out of range.";
     throw std::out_of_range(mssg);
   }
 
@@ -281,7 +281,7 @@ NDArray<T>::c_continuous_index(const std::vector<size_t>& indices) const {
 
   for (size_t i = dimensions_ - 1; i > 0; i--) {
     if (indices[i] >= shape_[i]) {
-      std::string mssg = "Index provided to NDArray out of range.";
+      const std::string mssg = "Index provided to NDArray out of range.";
       throw std::out_of_range(mssg);
     }
 
@@ -297,20 +297,20 @@ NDARRAY_INLINE size_t
 NDArray<T>::fortran_continuous_index(const std::vector<size_t>& indices) const {
   // Make sure proper number of indices
   if (indices.size() != dimensions_) {
-    std::string mssg = "Improper number of indicies provided to NDArray.";
+    const std::string mssg = "Improper number of indicies provided to NDArray.";
     throw std::runtime_error(mssg);
   }
 
   size_t indx = indices[0];
   if (indx >= shape_[0]) {
-    std::string mssg = "Index provided to NDArray out of range.";
+    const std::string mssg = "Index provided to NDArray out of range.";
     throw std::out_of_range(mssg);
   }
   size_t coeff = 1;
 
   for (size_t i = 0; i < dimensions_ - 1; i++) {
     if (indices[i] >= shape_[i]) {
-      std::string mssg = "Index provided to NDArray out of range.";
+      const std::string mssg = "Index provided to NDArray out of range.";
       throw std::out_of_range(mssg);
     }
 
@@ -327,13 +327,13 @@ NDARRAY_INLINE size_t
 NDArray<T>::c_continuous_index(const std::array<size_t, D>& indices) const {
   // Make sure proper number of indices
   if (indices.size() != dimensions_) {
-    std::string mssg = "Improper number of indicies provided to NDArray.";
+    const std::string mssg = "Improper number of indicies provided to NDArray.";
     throw std::runtime_error(mssg);
   }
 
   size_t indx = indices[dimensions_ - 1];
   if (indx >= shape_[dimensions_ - 1]) {
-    std::string mssg = "Index provided to NDArray out of range.";
+    const std::string mssg = "Index provided to NDArray out of range.";
     throw std::out_of_range(mssg);
   }
 
@@ -341,7 +341,7 @@ NDArray<T>::c_continuous_index(const std::array<size_t, D>& indices) const {
 
   for (size_t i = dimensions_ - 1; i > 0; i--) {
     if (indices[i] >= shape_[i]) {
-      std::string mssg = "Index provided to NDArray out of range.";
+      const std::string mssg = "Index provided to NDArray out of range.";
       throw std::out_of_range(mssg);
     }
 
@@ -358,20 +358,20 @@ NDARRAY_INLINE size_t NDArray<T>::fortran_continuous_index(
     const std::array<size_t, D>& indices) const {
   // Make sure proper number of indices
   if (indices.size() != dimensions_) {
-    std::string mssg = "Improper number of indicies provided to NDArray.";
+    const std::string mssg = "Improper number of indicies provided to NDArray.";
     throw std::runtime_error(mssg);
   }
 
   size_t indx = indices[0];
   if (indx >= shape_[0]) {
-    std::string mssg = "Index provided to NDArray out of range.";
+    const std::string mssg = "Index provided to NDArray out of range.";
     throw std::out_of_range(mssg);
   }
   size_t coeff = 1;
 
   for (size_t i = 0; i < dimensions_ - 1; i++) {
     if (indices[i] >= shape_[i]) {
-      std::string mssg = "Index provided to NDArray out of range.";
+      const std::string mssg = "Index provided to NDArray out of range.";
       throw std::out_of_range(mssg);
     }
 
@@ -387,14 +387,14 @@ template <class C>
 NDArray<T>& NDArray<T>::operator+=(const NDArray<C>& a) {
   // Ensure same number of dimensions
   if (dimensions_ != a.dimensions_) {
-    std::string mssg = "Cannot add two NDArrays with different dimensions.";
+    const std::string mssg = "Cannot add two NDArrays with different dimensions.";
     throw std::runtime_error(mssg);
   }
 
   // Ensure same shape
   for (size_t i = 0; i < dimensions_; i++) {
     if (shape_[i] != a.shape_[i]) {
-      std::string mssg = "Cannot add two NDArrays with different shapes";
+      const std::string mssg = "Cannot add two NDArrays with different shapes";
       throw std::runtime_error(mssg);
     }
   }
@@ -412,7 +412,7 @@ template <class C>
 NDArray<T>& NDArray<T>::operator-=(const NDArray<C>& a) {
   // Ensure same number of dimensions
   if (dimensions_ != a.dimensions_) {
-    std::string mssg =
+    const std::string mssg =
         "Cannot subtract two NDArrays with different dimensions.";
     throw std::runtime_error(mssg);
   }
@@ -420,7 +420,7 @@ NDArray<T>& NDArray<T>::operator-=(const NDArray<C>& a) {
   // Ensure same shape
   for (size_t i = 0; i < dimensions_; i++) {
     if (shape_[i] != a.shape_[i]) {
-      std::string mssg = "Cannot subtract two NDArrays with different shapes";
+      const std::string mssg = "Cannot subtract two NDArrays with different shapes";
       throw std::runtime_error(mssg);
     }
   }
@@ -438,7 +438,7 @@ template <class C>
 NDArray<T>& NDArray<T>::operator*=(const NDArray<C>& a) {
   // Ensure same number of dimensions
   if (dimensions_ != a.dimensions_) {
-    std::string mssg =
+    const std::string mssg =
         "Cannot multiply two NDArrays with different dimensions.";
     throw std::runtime_error(mssg);
   }
@@ -446,7 +446,7 @@ NDArray<T>& NDArray<T>::operator*=(const NDArray<C>& a) {
   // Ensure same shape
   for (size_t i = 0; i < dimensions_; i++) {
     if (shape_[i] != a.shape_[i]) {
-      std::string mssg = "Cannot multiply two NDArrays with different shapes";
+      const std::string mssg = "Cannot multiply two NDArrays with different shapes";
       throw std::runtime_error(mssg);
     }
   }
@@ -464,14 +464,14 @@ template <class C>
 NDArray<T>& NDArray<T>::operator/=(const NDArray<C>& a) {
   // Ensure same number of dimensions
   if (dimensions_ != a.dimensions_) {
-    std::string mssg = "Cannot divide two NDArrays with different dimensions.";
+    const std::string mssg = "Cannot divide two NDArrays with different dimensions.";
     throw std::runtime_error(mssg);
   }
 
   // Ensure same shape
   for (size_t i = 0; i < dimensions_; i++) {
     if (shape_[i] != a.shape_[i]) {
-      std::string mssg = "Cannot divide two NDArrays with different shapes";
+      const std::string mssg = "Cannot divide two NDArrays with different shapes";
       throw std::runtime_error(mssg);
     }
   }

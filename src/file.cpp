@@ -16,7 +16,7 @@ namespace exdir {
 File::File(boost::filesystem::path i_path) : Group{i_path} {
   // Use is_file() to make sure a File object was loaded.
   if (!is_file()) {
-    std::string mssg = path_.string() + " does not contain a File object.";
+    const std::string mssg = path_.string() + " does not contain a File object.";
     throw std::runtime_error(mssg);
   }
 }
@@ -39,7 +39,7 @@ File create_file(boost::filesystem::path name) {
     return File(name);
 
   } else {
-    std::string mssg = "The directory " + name.string() + " already exists.";
+    const std::string mssg = "The directory " + name.string() + " already exists.";
     throw std::runtime_error(mssg);
   }
 }

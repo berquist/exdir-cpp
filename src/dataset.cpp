@@ -16,13 +16,13 @@ namespace exdir {
 template<class T>
 Dataset<T>::Dataset(boost::filesystem::path i_path) : Object{i_path} {
   if (!is_dataset()) {
-    std::string mssg = path_.string() + " does not contain a Dataset object.";
+    const std::string mssg = path_.string() + " does not contain a Dataset object.";
     throw std::runtime_error(mssg);
   }
 
   // Make sure data.npy is present
   if (!boost::filesystem::exists(path_ / "data.npy")) {
-    std::string mssg = (path_ / "data.npy").string() + " does not exists.";
+    const std::string mssg = (path_ / "data.npy").string() + " does not exists.";
     throw std::runtime_error(mssg);
   }
 
@@ -45,7 +45,7 @@ Dataset<T>::~Dataset() {
 }
 
 template<class T>
-Raw Dataset<T>::create_raw(std::string name) {
+Raw Dataset<T>::create_raw(const std::string &name) {
   // Make sure directory does not yet exists
   if (!boost::filesystem::exists(path_ / name)) {
     // Make directory
@@ -63,7 +63,7 @@ Raw Dataset<T>::create_raw(std::string name) {
     raws_.push_back(name);
 
   } else {
-    std::string mssg =
+    const std::string mssg =
         "The directory " + name + " already exists in " + path_.string();
     throw std::runtime_error(mssg);
   }
@@ -85,7 +85,7 @@ void Dataset<T>::write() {
 }
 
 template<class T>
-Raw Dataset<T>::get_raw(std::string name) const {
+Raw Dataset<T>::get_raw(const std::string &name) const {
   // Make sure in raws_
   for (const auto& raw : raws_) {
     if (name == raw) {
@@ -93,7 +93,7 @@ Raw Dataset<T>::get_raw(std::string name) const {
     }
   }
   // throw error, wasn't valid Raw
-  std::string mssg =
+  const std::string mssg =
       "The raw " + name + " is not a member of " + this->name() + ".";
   throw std::runtime_error(mssg);
 }
