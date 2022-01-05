@@ -69,7 +69,7 @@ NDArray<T>::NDArray(std::vector<T> data, std::vector<size_t> init_shape,
 }
 
 template <class T>
-NDArray<T> NDArray<T>::load(const std::string &fname) {
+DType ndarray_type_to_dtype() {
   // Get expected DType according to T
   DType expected_dtype;
   const char* T_type_name = typeid(T).name();
@@ -104,6 +104,13 @@ NDArray<T> NDArray<T>::load(const std::string &fname) {
     const std::string mssg = "The datatype is not supported for NDArray.";
     throw std::runtime_error(mssg);
   }
+  return expected_dtype;
+}
+
+template <class T>
+NDArray<T> NDArray<T>::load(const std::string &fname) {
+  // Get expected DType according to T
+  DType expected_dtype = ndarray_type_to_dtype<T>();
 
   // Variables to send to npy function
   char* data_ptr;
@@ -152,39 +159,7 @@ NDArray<T> NDArray<T>::load(const std::string &fname) {
 template <class T>
 void NDArray<T>::save(const std::string &fname) const {
   // Get expected DType according to T
-  DType dtype;
-  const char* T_type_name = typeid(T).name();
-
-  if (T_type_name == typeid(char).name())
-    dtype = DType::CHAR;
-  else if (T_type_name == typeid(unsigned char).name())
-    dtype = DType::UCHAR;
-  else if (T_type_name == typeid(uint16_t).name())
-    dtype = DType::UINT16;
-  else if (T_type_name == typeid(uint32_t).name())
-    dtype = DType::UINT32;
-  else if (T_type_name == typeid(uint64_t).name())
-    dtype = DType::UINT64;
-  else if (T_type_name == typeid(int16_t).name())
-    dtype = DType::INT16;
-  else if (T_type_name == typeid(int32_t).name())
-    dtype = DType::INT32;
-  else if (T_type_name == typeid(int64_t).name())
-    dtype = DType::INT64;
-  else if (T_type_name == typeid(long long int).name())
-    dtype = DType::INT64;
-  else if (T_type_name == typeid(float).name())
-    dtype = DType::FLOAT32;
-  else if (T_type_name == typeid(double).name())
-    dtype = DType::DOUBLE64;
-  else if (T_type_name == typeid(std::complex<float>).name())
-    dtype = DType::COMPLEX64;
-  else if (T_type_name == typeid(std::complex<double>).name())
-    dtype = DType::COMPLEX128;
-  else {
-    const std::string mssg = "The datatype is not supported for NDArray.";
-    throw std::runtime_error(mssg);
-  }
+  DType dtype = ndarray_type_to_dtype<T>();
 
   // Write data to file
   write_npy(fname, reinterpret_cast<const char*>(data_.data()), shape_, dtype,
