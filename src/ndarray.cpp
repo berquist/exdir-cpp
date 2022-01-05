@@ -90,6 +90,8 @@ NDArray<T> NDArray<T>::load(const std::string &fname) {
     expected_dtype = DType::INT32;
   else if (T_type_name == typeid(int64_t).name())
     expected_dtype = DType::INT64;
+  else if (T_type_name == typeid(long long int).name())
+    expected_dtype = DType::INT64;
   else if (T_type_name == typeid(float).name())
     expected_dtype = DType::FLOAT32;
   else if (T_type_name == typeid(double).name())
@@ -168,6 +170,8 @@ void NDArray<T>::save(const std::string &fname) const {
   else if (T_type_name == typeid(int32_t).name())
     dtype = DType::INT32;
   else if (T_type_name == typeid(int64_t).name())
+    dtype = DType::INT64;
+  else if (T_type_name == typeid(long long int).name())
     dtype = DType::INT64;
   else if (T_type_name == typeid(float).name())
     dtype = DType::FLOAT32;
@@ -251,6 +255,7 @@ template class exdir::NDArray<uint64_t>;
 template class exdir::NDArray<int16_t>;
 template class exdir::NDArray<int32_t>;
 template class exdir::NDArray<int64_t>;
+template class exdir::NDArray<long long int>;
 template class exdir::NDArray<float>;
 template class exdir::NDArray<double>;
 template class exdir::NDArray<std::complex<float>>;

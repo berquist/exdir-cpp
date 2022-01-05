@@ -112,6 +112,7 @@ template class exdir::Dataset<uint64_t>;
 template class exdir::Dataset<int16_t>;
 template class exdir::Dataset<int32_t>;
 template class exdir::Dataset<int64_t>;
+template class exdir::Dataset<long long int>;
 template class exdir::Dataset<float>;
 template class exdir::Dataset<double>;
 template class exdir::Dataset<std::complex<float>>;
